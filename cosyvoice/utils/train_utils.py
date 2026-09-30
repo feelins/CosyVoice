@@ -131,8 +131,15 @@ def init_optimizer_and_scheduler(args, configs, model, gan):
 
         # use deepspeed optimizer for speedup
         if args.train_engine == "deepspeed":
+            # 老代码无条件传 scheduler_conf 的全部键，但 ConstantLR.__init__ 只接受
+            # optimizer，会直接 TypeError。按签名过滤，让不支持的键被忽略。
+            import inspect as _inspect
+            _allowed = set(_inspect.signature(scheduler_type.__init__).parameters)
+            _sched_kwargs = {k: v for k, v in configs['train_conf']['scheduler_conf'].items()
+                             if k in _allowed}
+
             def scheduler(opt):
-                return scheduler_type(opt, **configs['train_conf']['scheduler_conf'])
+                return scheduler_type(opt, **_sched_kwargs)
             model, optimizer, _, scheduler = deepspeed.initialize(
                 args=args,
                 model=model,
