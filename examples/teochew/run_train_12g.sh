@@ -44,6 +44,6 @@ export PATH="${BIN}:${PATH}"
     --model_dir exp/cosyvoice3/llm/torch_ddp \
     --tensorboard_dir tensorboard/cosyvoice3/llm/torch_ddp \
     --ddp.dist_backend nccl \
-    --num_workers 8 \
+    --num_workers 2 \
     --prefetch 50 \
     --pin_memory
