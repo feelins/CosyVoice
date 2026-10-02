@@ -78,9 +78,21 @@ X-SAMPA(ASCII) 示意覆盖:          (22, 22)  # 100%
 ```
 
 结论：
-- **IPA Unicode 与彝文音节都不在词表** → 直接喂会全部落到 byte-fallback（每字符 2–3 个
-  `<0xXX>` token）。序列长度暴涨，且 LLM 从没把这些 byte 模式当“音素”见过，学不稳、易崩音。
-- **X-SAMPA 100% ASCII 覆盖** → 与 Wylie 同机制，分词干净，是最优路径。
+
+> 易错点：IPA 符号在 Unicode 里的**官方名字**叫 “LATIN SMALL LETTER ESH(ʃ) / ENG(ŋ) /
+> OPEN E(ɛ) …”，名字带 “LATIN” 极易让人误以为它们在拉丁词表里。实测：**ʃ=False、ŋ=False、
+> ɛ=False、ʒ=False、ʔ=False、ɡ=False** —— 核心 IPA 符号几乎全不在 Qwen 词表。
+
+- **核心 IPA 符号几乎都不在词表**：IPA Extensions 块（U+0250–02AF，含 ʃ ʒ ɛ ɑ ɪ ɔ ʊ ə ʔ ɡ
+  ɲ ʈ ɖ ɭ ɳ ʍ ɣ ɯ ɤ ʲ ʰ ˈ ˌ ː 等 96 个）覆盖 0/96；Greek 块（含 θ）0/135。所以 ʃ、ŋ 这类
+  常用符号**确实仍需二次映射到 ASCII**（X-SAMPA：`ʃ→S`、`ŋ→N`）。
+- **极少数例外**：Latin-1 Supplement 里的 ð（ETH, U+00F0）、þ（THORN, U+00FE）被覆盖
+  （Latin-1 覆盖 94/128）——若你的音素集用到它们，可不必映射；但 θ（希腊 θ, U+03B8）不在词表。
+- **彝文音节块 0/256** 同样不在词表。
+- 实际影响：直接喂原始 IPA，绝大多数符号会落到 byte-fallback（每字符 2–3 个 `<0xXX>` token），
+  序列暴涨且 LLM 未见过这些 byte 模式当“音素”，学不稳、易崩音。
+- **X-SAMPA 100% ASCII 覆盖** → 与 Wylie 同机制，分词干净，是最优路径；且为一致性与稳健性，
+  建议把整个音素集（含 ð/þ）统一映射到 X-SAMPA，避免训练/推理代码对个别符号分支处理。
 
 > 注：Qwen 分词器有 byte token，所以 IPA “能编码”，但是以 **byte** 形式而非**音素**形式，
 > 训练代价高、效果差。我们要的是“音素级干净 token”，所以必须 ASCII 化。
