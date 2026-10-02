@@ -50,3 +50,10 @@ pretrained_models/*
 *_pb2_grpc.py
 *_pb2.py
 *.tar
+
+# experiment artifacts: logs / inference outputs / deliverable zips
+*.log
+*.zip
+teochew_eval/out/
+tibetan_eval/out/
+tibetan_eval/out_female/
