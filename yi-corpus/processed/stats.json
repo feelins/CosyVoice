@@ -1,0 +1,39 @@
+{
+  "n": 1766,
+  "by_source": {
+    "04-iiiwav": 329,
+    "06-chuxiong-yi-meige": 1437
+  },
+  "dur": {
+    "04-iiiwav": {
+      "n": 329,
+      "sum_h": 0.188,
+      "min": 0.314,
+      "med": 1.772,
+      "max": 10.673,
+      "over60": 0,
+      "under1": 67
+    },
+    "06-chuxiong-yi-meige": {
+      "n": 1437,
+      "sum_h": 5.429,
+      "min": 0.321,
+      "med": 12.262,
+      "max": 286.962,
+      "over60": 13,
+      "under1": 11
+    }
+  },
+  "xsampa_empty": 0,
+  "warnings": [],
+  "splits_all": [
+    1590,
+    88,
+    88
+  ],
+  "splits_06": [
+    1295,
+    71,
+    71
+  ]
+}

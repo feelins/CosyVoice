@@ -1,0 +1,34 @@
+# ============================================================
+# yi-corpus 上传 / 忽略规则
+# 原则：只提交「源码 + 文档 + 小体积元数据 / 配置」；
+#       原始音频、生成数据、训练检查点、日志 一律不入库（体积大且可重建）。
+# ============================================================
+
+# 原始音频（621M，托管到外部，如 HuggingFace Dataset，勿入 git）
+wavs/
+
+# 冗余压缩包（383M，等于 wavs+元数据的打包备份）
+yi-corpus.zip
+
+# 生成数据（可由 scripts 从 metadata + wavs 重新生成）
+# data/ 与 data_all/ 是训练用 parquet + .data.list，全量忽略
+data/
+data_all/
+
+# processed/data/ 仅忽略大的 parquet；文本产物(all_xsampa/stats/splits)保留
+processed/data/
+
+# 训练检查点（23G）务必忽略
+exp/
+
+# 日志 / 临时
+*.log
+cleanup.out
+train.log
+
+# 可视化日志
+tensorboard/
+
+# 注意：根 .gitignore 有 **/*build*，会误伤 scripts/build_dataset.py（文件名含 build），
+# 这里显式重新纳入（不影响根规则对其它 build 产物的忽略）
+!scripts/build_dataset.py
