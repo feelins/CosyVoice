@@ -6,6 +6,8 @@ run `export PYTHONPATH=third_party/Matcha-TTS` if you want to use `from cosyvoic
 
 ## cannot find resource.zip or cannot unzip resource.zip
 
+good good
+
 Please make sure you have git-lfs installed. Execute
 
 ```sh
