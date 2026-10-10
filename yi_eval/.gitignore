@@ -1,0 +1,3 @@
+# yi_eval 只提交推理/分析脚本，忽略生成产物
+out/
+samples.tsv
